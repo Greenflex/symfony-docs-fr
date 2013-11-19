@@ -17,7 +17,7 @@ Les extensions de type de formulaire ont deux utilisations principales :
 #. Vous voulez ajouter une **fonctionnalité générique sur plusieurs types**
    (comme ajouter un texte d'« aide » sur tout les types de champ);
 #. Vous voulez ajouter une **fonctionnalité spécifique sur un type** (comme
-   ajouter une fonctionnalité « téléchargement » sur un type de champ « file »). 
+   ajouter une fonctionnalité « téléchargement » sur un type de champ « file »).
 
 Dans ces deux cas, vous pourrez atteindre votre objectif en personnalisant
 l'affichage du formulaire, ou en personnalisant les types de champ. Mais
@@ -108,20 +108,25 @@ utilisant le tag ``form.type_extension`` :
 
         services:
             acme_demo_bundle.image_type_extension:
-                class: Acme\DemoBundle\Form\Type\ImageTypeExtension
+                class: Acme\DemoBundle\Form\Extension\ImageTypeExtension
                 tags:
                     - { name: form.type_extension, alias: file }
 
     .. code-block:: xml
 
-        <service id="acme_demo_bundle.image_type_extension" class="Acme\DemoBundle\Form\Type\ImageTypeExtension">
+        <service id="acme_demo_bundle.image_type_extension"
+            class="Acme\DemoBundle\Form\Extension\ImageTypeExtension"
+        >
             <tag name="form.type_extension" alias="file" />
         </service>
 
     .. code-block:: php
 
         $container
-            ->register('acme_demo_bundle.image_type_extension', 'Acme\DemoBundle\Form\Type\ImageTypeExtension')
+            ->register(
+                'acme_demo_bundle.image_type_extension',
+                'Acme\DemoBundle\Form\Extension\ImageTypeExtension'
+            )
             ->addTag('form.type_extension', array('alias' => 'file'));
 
 La clé ``alias`` du tag est le type de champ sur lequel appliquer votre extension.
@@ -228,8 +233,8 @@ actuelle pour l'afficher dans la vue::
             if (array_key_exists('image_path', $options)) {
                 $parentData = $form->getParent()->getData();
 
-                $propertyPath = new PropertyPath($options['image_path']);
-                $imageUrl = $propertyPath->getValue($parentData);
+                    $propertyPath = new PropertyPath($options['image_path']);
+                    $imageUrl = $propertyPath->getValue($parentData);
                 // définit une variable "image_url" qui sera disponible à l'affichage du champ
                 $view->set('image_url', $imageUrl);
             }
@@ -285,7 +290,7 @@ Spécifiquement, vous devez surcharger le bloc ``file_widget`` pour le faire :
 Utiliser l'extension de type de formulaire
 ------------------------------------------
 
-A partir de maintenant, lorsque vous ajouterez un champ de type ``file`` 
+A partir de maintenant, lorsque vous ajouterez un champ de type ``file``
 dans un formulaire, vous pourrez spécifier l'option ``image_path`` qui sera
 utilisée pour afficher une image à côté du champ. Par exemple::
 
