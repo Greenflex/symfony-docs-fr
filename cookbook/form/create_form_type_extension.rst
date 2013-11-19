@@ -233,10 +233,15 @@ actuelle pour l'afficher dans la vue::
             if (array_key_exists('image_path', $options)) {
                 $parentData = $form->getParent()->getData();
 
+                if (null !== $parentData) {
                     $propertyPath = new PropertyPath($options['image_path']);
                     $imageUrl = $propertyPath->getValue($parentData);
-                // définit une variable "image_url" qui sera disponible à l'affichage du champ
-                $view->set('image_url', $imageUrl);
+                } else {
+                     $imageUrl = null;
+                }
+
+                // set an "image_url" variable that will be available when rendering this field
+                $view->vars['image_url'] = $imageUrl;
             }
         }
 
